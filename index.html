@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLAR WAVES Chatbot</title>
+    <script defer src="chatbot.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #chat-window { border: 1px solid #ccc; width: 300px; height: 400px; overflow-y: auto; margin: auto; padding: 10px; }
+        #user-input { width: 250px; padding: 5px; }
+        #send-button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <h2>POLAR WAVES Chatbot</h2>
+    <div id="chat-window"></div>
+    <input type="text" id="user-input" placeholder="Ask me a question...">
+    <button id="send-button">Send</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const chatbot = new PolarWavesChatbot();
+            const chatWindow = document.getElementById("chat-window");
+            const userInput = document.getElementById("user-input");
+            const sendButton = document.getElementById("send-button");
+
+            function appendMessage(sender, message) {
+                const messageDiv = document.createElement("div");
+                messageDiv.textContent = `${sender}: ${message}`;
+                chatWindow.appendChild(messageDiv);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+
+            sendButton.addEventListener("click", () => {
+                const userMessage = userInput.value.trim();
+                if (userMessage) {
+                    appendMessage("You", userMessage);
+                    setTimeout(() => {
+                        const botResponse = chatbot.getResponse(userMessage);
+                        appendMessage("Bot", botResponse);
+                    }, 500);
+                    userInput.value = "";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
